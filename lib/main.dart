@@ -143,13 +143,27 @@ class FavouritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var favourites = appState.favourites;
+    
+    if(appState.favourites.isEmpty) {
+      return Center(
+        child: Text('No Favourties Yet!'),
+      );
+    }
     
     return Center(
-      child: Column(children: [
-        for(var fav in favourites) 
-          Text('$fav'),
-      ]),
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('You have ${appState.favourites.length} favourites'),
+          ),
+          for (var pair in appState.favourites)
+            ListTile(
+              leading: Icon(Icons.favorite),
+              title: Text(pair.asLowerCase),
+            ),
+        ],
+      ),
     );
     
   }
