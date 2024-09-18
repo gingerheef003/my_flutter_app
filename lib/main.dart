@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
+  var history = <WordPair>[];
 
   void getNext() {
     current = WordPair.random();
@@ -36,12 +37,18 @@ class MyAppState extends ChangeNotifier {
 
   var favourites = <WordPair>[];
 
-  void toggleFavourite() {
-    if(favourites.contains(current)) {
-      favourites.remove(current);
+  void toggleFavourite([WordPair? pair]) {
+    pair = pair ?? current;
+    if(favourites.contains(pair)) {
+      favourites.remove(pair);
     } else {
-      favourites.add(current);
+      favourites.add(pair);
     }
+    notifyListeners();
+  }
+
+  void removeFavourite(WordPair pair) {
+    favourites.remove(pair);
     notifyListeners();
   }
 }
@@ -52,7 +59,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   var selectedIndex = 0;
 
   @override
